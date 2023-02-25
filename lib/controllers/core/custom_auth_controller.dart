@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_core/models/core/user_model.dart';
+import '../../models/core/user_model.dart';
 import '../../core/apis.dart';
 
 class CustomAuthController extends ChangeNotifier {
@@ -12,6 +12,7 @@ class CustomAuthController extends ChangeNotifier {
   UserModel? _user;
   Timer? _sessionTimer;
   bool _isLoading = false;
+
   // getters
   String? get token => _token;
   UserModel? get user => _user;
@@ -19,8 +20,7 @@ class CustomAuthController extends ChangeNotifier {
   bool get isLoggedIn => _token != null;
 
   // actions
-
-  Future<void> login(Map userInfo) async {
+  Future<void> login(Map<String, dynamic> userInfo) async {
     _isLoading = true;
     try {
       final res = await http.post(Uri.parse(Apis.login),
@@ -35,8 +35,8 @@ class CustomAuthController extends ChangeNotifier {
         final prefs = await Apis.initShPrefs;
         final userData = jsonEncode({
           "token": token,
-          "expiresIn": _expiresIn!.toIso8601String(),
-          "user": user!.toJson(),
+          "expiresIn": _expiresIn?.toIso8601String(),
+          "user": user?.toJson(),
         });
         prefs.setString("userInfo", userData);
       } else {
