@@ -1,0 +1,3 @@
+class Routes {
+  Routes._();
+}
